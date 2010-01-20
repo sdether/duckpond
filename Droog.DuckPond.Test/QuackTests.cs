@@ -12,80 +12,110 @@ namespace Droog.DuckPond.Test {
         [TestFixtureTearDown]
         public void GlobalTeardown() {
 #if DEBUG
-            DuckExtensions.Factory.SaveAssembly("duckpond");
+            DuckExtensions.Factory.SaveAssembly("duckpond.dll");
 #endif
         }
 
-        public interface IReturnOnly {
-            int ReturnOnlyInt();
+        [Test]
+        public void Can_proxy_return_only_method_int_version() {
+            var x = new Swan().As<IReturnOnlyInt>();
+            Assert.IsTrue(x.Implements<IReturnOnlyInt>());
+            Assert.AreEqual(42, x.ReturnOnlyInt());
         }
 
         [Test]
-        public void Can_proxy_return_only_method() {
-            var x = new Swan().As<IReturnOnly>();
-            Assert.IsTrue(x.Implements<IReturnOnly>());
-            Assert.AreEqual(42,x.ReturnOnlyInt());
+        public void Can_proxy_return_only_method_string_version() {
+            var x = new Swan().As<IReturnOnlyString>();
+            Assert.IsTrue(x.Implements<IReturnOnlyString>());
+            Assert.AreEqual("foo", x.ReturnOnlyString());
         }
 
-        public class Swan {
-            public int SideEffectCalled;
-            public int OverloadIntCalled;
-            public int OverloadStringCalled;
-            public string Indexer;
-            public string Property;
+    }
 
-            public int ReturnOnlyInt() {
-                return 42;
-            }
+    public interface IReturnOnlyInt {
+        int ReturnOnlyInt();
+    }
 
-            public string ReturnOnlyString() {
-                return "foo";
-            }
+    public class ReturnOnlyImpl : IReturnOnlyInt {
+        private readonly Swan _wrapped;
+        public ReturnOnlyImpl(Swan wrapped) { _wrapped = wrapped; }
+        public int ReturnOnlyInt() { return _wrapped.ReturnOnlyInt(); }
+    }
 
-            public void SideEffectOnly() {
-                SideEffectCalled++;
-            }
-
-            public int LotsOfArgs(int a, int b, int c, int d, int e, int f, int g) {
-                return 88;
-            }
-
-            public void OutArgs(out int a) {
-                a = 24;
-            }
-
-            public void RefArgs(ref int a) {
-                a = 5;
-            }
-
-            public void Overload(int x) {
-                OverloadIntCalled++;
-            }
-            public void Overload(string x) {
-                OverloadStringCalled++; 
-            }
-
-            public string this[string key] {
-                get {return key;}
-                set { Indexer = value+key;}
-            }
-            
-            public string Prop {
-                get { return Property; }
-                set { Property = value; }
-            }
+    public interface IReturnOnlyString {
+        string ReturnOnlyString();
+    }
+    
+    public class Swan {
+        public int SideEffectCalled;
+        public int OverloadIntCalled;
+        public int OverloadStringCalled;
+        public string Indexer;
+        public string Property;
+        public int ArgFuncCalled = -1;
+        public int ReturnOnlyInt() {
+            return 42;
         }
 
-        public class GenericSwan<T> {
-            public T Value;
+        public string ReturnOnlyString() {
+            return "foo";
+        }
 
-            public T GetValue() {
-                return Value;
-            }
+        public void SideEffectOnly() {
+            SideEffectCalled++;
+        }
 
-            public void SetValue(T value) {
-                Value = value;
-            }
+        public void TwoArgs(object a, object b) {
+            ArgFuncCalled = 2;
+        }
+
+        public void ThreeArgs(string a, object b, int c) {
+            ArgFuncCalled = 3;
+        }
+
+        public void FourArgs(int a, string b, object c, int d) {
+            ArgFuncCalled = 4;
+        }
+
+        public void SevenArgs(int a, int b, int c, int d, int e, int f, int g) {
+            ArgFuncCalled = 7;
+        }
+
+        public void OutArgs(out int a) {
+            a = 24;
+        }
+
+        public void RefArgs(ref int a) {
+            a = 5;
+        }
+
+        public void Overload(int x) {
+            OverloadIntCalled++;
+        }
+        public void Overload(string x) {
+            OverloadStringCalled++;
+        }
+
+        public string this[string key] {
+            get { return key; }
+            set { Indexer = value + key; }
+        }
+
+        public string Prop {
+            get { return Property; }
+            set { Property = value; }
+        }
+    }
+
+    public class GenericSwan<T> {
+        public T Value;
+
+        public T GetValue() {
+            return Value;
+        }
+
+        public void SetValue(T value) {
+            Value = value;
         }
     }
 }

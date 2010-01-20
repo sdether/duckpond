@@ -110,7 +110,7 @@ namespace Droog.DuckPond {
                 if(typeMap == null) {
                     throw new InvalidCastException(string.Format("Class{0} does not implement all members of interface {1}", instanceType, interfaceType));
                 }
-                var typeAttributes = TypeAttributes.AutoClass | TypeAttributes.Class | TypeAttributes.Public;
+                const TypeAttributes typeAttributes = TypeAttributes.AutoClass | TypeAttributes.Class | TypeAttributes.Public;
                 var typeBuilder = _moduleBuilder.DefineType(typeName, typeAttributes, typeof(Base), new[] { interfaceType });
                 var storageField = CreateConstructor(instanceType, typeBuilder);
                 foreach(var map in typeMap) {
@@ -149,9 +149,9 @@ namespace Droog.DuckPond {
                 var il = methodBuilder.GetILGenerator();
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, storageField);
-
-                // TODO: need to create as many stack vars as parameters
-                il.Emit(OpCodes.Ldarg_1);
+                for(var i=0;i<map.Parameters.Length;i++) {
+                    il.Emit(OpCodes.Ldarg_S, i);
+                }
                 il.Emit(OpCodes.Callvirt, map.InstanceMethod);
                 il.Emit(OpCodes.Ret);
             }
