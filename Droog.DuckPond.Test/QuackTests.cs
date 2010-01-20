@@ -30,22 +30,32 @@ namespace Droog.DuckPond.Test {
             Assert.AreEqual("foo", x.ReturnOnlyString());
         }
 
+
+        [Test]
+        public void Can_proxy_sideeffect_only_method() {
+            var swan = new Swan();
+            var x = swan.As<ISideEffectOnly>();
+            Assert.IsTrue(x.Implements<ISideEffectOnly>());
+            x.SideEffectOnly();
+            Assert.AreEqual(1,swan.SideEffectCalled);
+        }
     }
 
     public interface IReturnOnlyInt {
         int ReturnOnlyInt();
     }
-
+    public interface IReturnOnlyString {
+        string ReturnOnlyString();
+    }
+    public interface ISideEffectOnly {
+        void SideEffectOnly();
+    }
     public class ReturnOnlyImpl : IReturnOnlyInt {
         private readonly Swan _wrapped;
         public ReturnOnlyImpl(Swan wrapped) { _wrapped = wrapped; }
         public int ReturnOnlyInt() { return _wrapped.ReturnOnlyInt(); }
     }
 
-    public interface IReturnOnlyString {
-        string ReturnOnlyString();
-    }
-    
     public class Swan {
         public int SideEffectCalled;
         public int OverloadIntCalled;
