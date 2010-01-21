@@ -149,7 +149,7 @@ namespace Droog.DuckPond {
                 var il = methodBuilder.GetILGenerator();
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, storageField);
-                for(var i=0;i<map.Parameters.Length;i++) {
+                for(var i=1;i<=map.Parameters.Length;i++) {
                     il.Emit(OpCodes.Ldarg_S, i);
                 }
                 il.Emit(OpCodes.Callvirt, map.InstanceMethod);
