@@ -210,6 +210,33 @@ namespace Droog.DuckPond.Test {
             swan.Value = "baz";
             Assert.AreEqual("baz", duck.GetValue());
         }
+
+        [Test]
+        public void Can_proxy_setter_method_on_generic_class_with_generic_interface() {
+            var swan = new GenericSwan<string>();
+            var duck = swan.As<IGenericSetValue<string>>();
+            Assert.IsTrue(duck.Implements<IGenericSetValue<string>>());
+            duck.SetValue("baz");
+            Assert.AreEqual("baz", swan.Value);
+        }
+
+        [Test]
+        public void Can_proxy_setter_method_on_generic_class_with_non_generic_interface_inheriting_generic_interface() {
+            var swan = new GenericSwan<string>();
+            var duck = swan.As<IStringSetValueViaGenericInterface>();
+            Assert.IsTrue(duck.Implements<IStringSetValueViaGenericInterface>());
+            duck.SetValue("baz");
+            Assert.AreEqual("baz", swan.Value);
+        }
+
+        [Test]
+        public void Can_proxy_setter_method_on_generic_class_with_non_generic_interface() {
+            var swan = new GenericSwan<string>();
+            var duck = swan.As<IStringSetValue>();
+            Assert.IsTrue(duck.Implements<IStringSetValue>());
+            duck.SetValue("baz");
+            Assert.AreEqual("baz", swan.Value);
+        }
     }
 
     #region Interfaces
@@ -285,12 +312,20 @@ namespace Droog.DuckPond.Test {
     public interface IGenericGetValue<T> {
         T GetValue();
     }
-    public interface IStringGetValueViaGenericInterface : IGenericGetValue<string> {}
+    public interface IStringGetValueViaGenericInterface : IGenericGetValue<string> { }
     public interface IStringGetValue {
         string GetValue();
     }
+    public interface IGenericSetValue<T> {
+        void SetValue(T value);
+    }
+    public interface IStringSetValueViaGenericInterface : IGenericSetValue<string> { }
+    public interface IStringSetValue {
+        void SetValue(string value);
+    }
     #endregion
 
+    #region Classes to be proxied
     public class Swan {
         public int OutArgValue = 24;
         public int RefArgValue = 42;
@@ -367,7 +402,9 @@ namespace Droog.DuckPond.Test {
             Value = value;
         }
     }
+    #endregion
 
+    #region Test Implementations for IL comparison
     public class ReturnOnlyImpl : IReturnOnlyInt {
         private readonly Swan _wrapped;
         public ReturnOnlyImpl(Swan wrapped) { _wrapped = wrapped; }
@@ -379,5 +416,5 @@ namespace Droog.DuckPond.Test {
         public ArgAndReturnImpl(Swan wrapped) { _wrapped = wrapped; }
         public string ArgAndReturn(string a) { return _wrapped.ArgAndReturn(a); }
     }
-
+    #endregion
 }

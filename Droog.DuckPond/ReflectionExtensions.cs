@@ -7,7 +7,7 @@ using System.Text;
 namespace Droog.DuckPond {
     public static class ReflectionExtensions {
         public static string GetSignature(this MethodInfo methodInfo) {
-            return methodInfo.Name;
+            return methodInfo.ToString();
         }
     }
 }
