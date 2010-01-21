@@ -86,31 +86,6 @@ namespace Droog.DuckPond {
             }
         }
 
-        private static bool HasSameParameters(MethodInfo instanceMethod, ParameterInfo[] interfaceParameters) {
-            var parameters = instanceMethod.GetParameters();
-            if(parameters.Length != interfaceParameters.Length) {
-                return false;
-            }
-            for(var i = 0; i < parameters.Length; i++) {
-                if(parameters[i].IsOut != interfaceParameters[i].IsOut) {
-                    return false;
-                }
-                var type = parameters[i].ParameterType;
-                var interfaceType = interfaceParameters[i].ParameterType;
-                if(type.IsByRef != interfaceType.IsByRef) {
-                    return false;
-                }
-                if(type.IsGenericParameter && interfaceType.IsGenericParameter) {
-                    if(type.BaseType != interfaceType.BaseType) {
-                        return false;
-                    }
-                } else if(type != interfaceType) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         public bool CanQuack(object instance, Type interfaceType) {
             return GetMap(instance.GetType(), interfaceType) != null;
         }
