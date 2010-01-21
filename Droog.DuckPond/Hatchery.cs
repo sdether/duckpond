@@ -6,7 +6,7 @@ using System.Reflection.Emit;
 using System.Text;
 
 namespace Droog.DuckPond {
-    public class Hatchery {
+    public class Hatchery : IHatchery {
         public class Base { }
         public struct MethodMap {
             public readonly MethodInfo InstanceMethod;
@@ -58,9 +58,8 @@ namespace Droog.DuckPond {
             var instanceMethods = instanceType.GetMethods();
             var maps = new List<MethodMap>();
             foreach(var interfaceMethod in interfaceMethods) {
-                var interfaceMethodSignature = interfaceMethod.GetSignature();
                 var instanceMethod = (from method in instanceMethods
-                                      where method.GetSignature() == interfaceMethodSignature
+                                      where method.ToString() == interfaceMethod.ToString()
                                       select method).FirstOrDefault();
                 if(instanceMethod == null) {
                     return null;
@@ -82,7 +81,7 @@ namespace Droog.DuckPond {
 
         private void AddMethods(IDictionary<string, MethodInfo> uniqueMethods, MethodInfo[] methods) {
             foreach(var method in methods) {
-                uniqueMethods[method.GetSignature()] = method;
+                uniqueMethods[method.ToString()] = method;
             }
         }
 

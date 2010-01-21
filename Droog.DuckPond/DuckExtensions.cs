@@ -6,9 +6,9 @@ using System.Text;
 namespace Droog.DuckPond {
     public static class DuckExtensions {
         private static readonly object padlock = new object();
-        private static Hatchery _factory;
+        private static IHatchery _factory;
 
-        public static Hatchery Factory {
+        public static IHatchery Factory {
             get {
                 if(_factory == null) {
                     lock(padlock) {
@@ -18,6 +18,9 @@ namespace Droog.DuckPond {
                     }
                 }
                 return _factory;
+            }
+            set {
+                _factory = value;
             }
         }
 

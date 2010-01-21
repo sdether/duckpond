@@ -12,7 +12,7 @@ namespace Droog.DuckPond.Test {
         [TestFixtureTearDown]
         public void GlobalTeardown() {
 #if DEBUG
-            DuckExtensions.Factory.SaveAssembly("duckpond.dll");
+            ((Hatchery)DuckExtensions.Factory).SaveAssembly("duckpond.dll");
 #endif
         }
 
