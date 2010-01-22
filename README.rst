@@ -7,10 +7,12 @@ Uses
 - Create an interface around a class that does not implement interfaces for easier mocking.
 - Create fine grained contracts on the depedency end rather than accepting everything a class exposes.
 
+
 Missing Features
 ================
 - Cannot remap methods with same type signature but different names
 - Cannot remap parameter types to duck types along the way
+
 
 Installation
 ============
@@ -49,6 +51,6 @@ you can simply cast ``Duck`` to ``IQuacker`` without making ``Duck`` implement t
 
 Contributors
 ============
-- Arne Classen (sdether)
+- Arne Claassen (sdether)
 
 
