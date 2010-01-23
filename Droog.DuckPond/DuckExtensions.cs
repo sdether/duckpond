@@ -38,11 +38,11 @@ namespace Droog.DuckPond {
             }
         }
 
-        public static T As<T>(this object instance) {
+        public static T AsImplementationOf<T>(this object instance) {
             return (T)Factory.Create(instance, typeof(T));
         }
 
-        public static object As(this object instance, Type interfaceType) {
+        public static object AsImplementationOf(this object instance, Type interfaceType) {
             return Factory.Create(instance, interfaceType);
         }
     }

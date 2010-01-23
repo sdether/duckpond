@@ -5,7 +5,7 @@ A .NET library to provide duck-typing capabilities. The extension method object.
 Uses
 ================
 - Create an interface around a class that does not implement interfaces for easier mocking.
-- Create fine grained contracts on the depedency end rather than accepting everything a class exposes.
+- Create fine grained contracts on the dependency end rather than accepting everything a class exposes.
 
 
 Missing Features
@@ -47,7 +47,7 @@ you can simply cast ``Duck`` to ``IQuacker`` without making ``Duck`` implement t
 
 ::
 
-  var quacker = new Duck().As<IQuacker>();
+  var quacker = new Duck().AsImplementationOf<IQuacker>();
 
 Contributors
 ============

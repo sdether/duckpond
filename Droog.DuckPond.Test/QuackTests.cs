@@ -31,14 +31,14 @@ namespace Droog.DuckPond.Test {
 
         [Test]
         public void Can_proxy_return_only_method_int_version() {
-            var duck = new Swan().As<IReturnOnlyInt>();
+            var duck = new Swan().AsImplementationOf<IReturnOnlyInt>();
             Assert.IsTrue(duck.Implements<IReturnOnlyInt>());
             Assert.AreEqual(42, duck.ReturnOnlyInt());
         }
 
         [Test]
         public void Can_proxy_return_only_method_string_version() {
-            var duck = new Swan().As<IReturnOnlyString>();
+            var duck = new Swan().AsImplementationOf<IReturnOnlyString>();
             Assert.IsTrue(duck.Implements<IReturnOnlyString>());
             Assert.AreEqual("foo", duck.ReturnOnlyString());
         }
@@ -46,7 +46,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_sideeffect_only_method() {
             var swan = new Swan();
-            var duck = swan.As<ISideEffectOnly>();
+            var duck = swan.AsImplementationOf<ISideEffectOnly>();
             Assert.IsTrue(duck.Implements<ISideEffectOnly>());
             duck.SideEffectOnly();
             Assert.AreEqual(1, swan.SideEffectCalled);
@@ -55,7 +55,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_arg_and_return_method() {
             var swan = new Swan();
-            var duck = swan.As<IArgAndReturn>();
+            var duck = swan.AsImplementationOf<IArgAndReturn>();
             Assert.IsTrue(duck.Implements<IArgAndReturn>());
             Assert.AreEqual("foo", swan.ArgAndReturn("foo"));
             Assert.AreEqual("foo", duck.ArgAndReturn("foo"));
@@ -64,7 +64,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_two_arg_method() {
             var swan = new Swan();
-            var duck = swan.As<ITwoArgs>();
+            var duck = swan.AsImplementationOf<ITwoArgs>();
             Assert.IsTrue(duck.Implements<ITwoArgs>());
             duck.XArgs("foo", 1);
             Assert.AreEqual(new object[] { "foo", 1 }, swan.Args);
@@ -73,7 +73,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_three_arg_method() {
             var swan = new Swan();
-            var duck = swan.As<IThreeArgs>();
+            var duck = swan.AsImplementationOf<IThreeArgs>();
             Assert.IsTrue(duck.Implements<IThreeArgs>());
             duck.XArgs("a", "b", 3);
             Assert.AreEqual(new object[] { "a", "b", 3 }, swan.Args);
@@ -82,7 +82,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_four_arg_method() {
             var swan = new Swan();
-            var duck = swan.As<IFourArgs>();
+            var duck = swan.AsImplementationOf<IFourArgs>();
             Assert.IsTrue(duck.Implements<IFourArgs>());
             duck.XArgs(1, "b", "c", 4);
             Assert.AreEqual(new object[] { 1, "b", "c", 4 }, swan.Args);
@@ -91,7 +91,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_seven_arg_method() {
             var swan = new Swan();
-            var duck = swan.As<ISevenArgs>();
+            var duck = swan.AsImplementationOf<ISevenArgs>();
             Assert.IsTrue(duck.Implements<ISevenArgs>());
             duck.XArgs(1,2,3,4,5,6,7);
             Assert.AreEqual(new object[] { 1, 2, 3, 4, 5, 6, 7 }, swan.Args);
@@ -100,7 +100,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_out_arg_method() {
             var swan = new Swan();
-            var duck = swan.As<IOutArgs>();
+            var duck = swan.AsImplementationOf<IOutArgs>();
             Assert.IsTrue(duck.Implements<IOutArgs>());
             int y;
             duck.OutArgs(out y);
@@ -110,7 +110,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_ref_arg_method() {
             var swan = new Swan();
-            var duck = swan.As<IRefArgs>();
+            var duck = swan.AsImplementationOf<IRefArgs>();
             Assert.IsTrue(duck.Implements<IRefArgs>());
             var y = 37;
             duck.RefArgs(ref y);
@@ -122,7 +122,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_a_single_overloaded_method() {
             var swan = new Swan();
-            var duck = swan.As<IOneOfTheOverloads>();
+            var duck = swan.AsImplementationOf<IOneOfTheOverloads>();
             Assert.IsTrue(duck.Implements<IOneOfTheOverloads>());
             duck.Overload(1);
             Assert.AreEqual(1, swan.OverloadIntCalled);
@@ -132,7 +132,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_a_multiple_overloaded_methods() {
             var swan = new Swan();
-            var duck = swan.As<IBothOverloads>();
+            var duck = swan.AsImplementationOf<IBothOverloads>();
             Assert.IsTrue(duck.Implements<IBothOverloads>());
             duck.Overload(1);
             Assert.AreEqual(1, swan.OverloadIntCalled);
@@ -145,7 +145,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_indexer_property() {
             var swan = new Swan();
-            var duck = swan.As<IIndexer>();
+            var duck = swan.AsImplementationOf<IIndexer>();
             Assert.IsTrue(duck.Implements<IIndexer>());
             duck["key"] = "bar";
             Assert.AreEqual("barkey",swan.Indexer);
@@ -156,7 +156,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_property_get_and_set() {
             var swan = new Swan();
-            var duck = swan.As<IProp>();
+            var duck = swan.AsImplementationOf<IProp>();
             Assert.IsTrue(duck.Implements<IProp>());
             duck.Prop = "baz";
             Assert.AreEqual("baz", swan.Property);
@@ -166,7 +166,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_property_get_only() {
             var swan = new Swan();
-            var duck = swan.As<IPropGetOnly>();
+            var duck = swan.AsImplementationOf<IPropGetOnly>();
             Assert.IsTrue(duck.Implements<IPropGetOnly>());
             swan.Property = "baz";
             Assert.AreEqual("baz", duck.Prop);
@@ -175,14 +175,14 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_all_methods_on_swan() {
             var swan = new Swan();
-            var duck = swan.As<ISwan>();
+            var duck = swan.AsImplementationOf<ISwan>();
             Assert.IsTrue(duck.Implements<ISwan>());
         }
 
         [Test]
         public void Can_proxy_generic_getter_method() {
             var swan = new Swan();
-            var duck = swan.As<IGenericGetterMethod>();
+            var duck = swan.AsImplementationOf<IGenericGetterMethod>();
             Assert.IsTrue(duck.Implements<IGenericGetterMethod>());
             swan.GenericValue = "foo";
             Assert.AreEqual("foo", duck.GenericGetter<string>());
@@ -191,7 +191,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_generic_setter_method() {
             var swan = new Swan();
-            var duck = swan.As<IGenericSetterMethod>();
+            var duck = swan.AsImplementationOf<IGenericSetterMethod>();
             Assert.IsTrue(duck.Implements<IGenericSetterMethod>());
             duck.GenericSetter("foo");
             Assert.AreEqual("foo", swan.GenericValue);
@@ -200,7 +200,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_return_method_on_generic_class_with_generic_interface() {
             var swan = new GenericSwan<string>();
-            var duck = swan.As<IGenericGetValue<string>>();
+            var duck = swan.AsImplementationOf<IGenericGetValue<string>>();
             Assert.IsTrue(duck.Implements<IGenericGetValue<string>>());
             swan.Value = "baz";
             Assert.AreEqual("baz", duck.GetValue());
@@ -209,7 +209,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_return_method_on_generic_class_with_non_generic_interface_inheriting_generic_interface() {
             var swan = new GenericSwan<string>();
-            var duck = swan.As<IStringGetValueViaGenericInterface>();
+            var duck = swan.AsImplementationOf<IStringGetValueViaGenericInterface>();
             Assert.IsTrue(duck.Implements<IStringGetValueViaGenericInterface>());
             swan.Value = "baz";
             Assert.AreEqual("baz", duck.GetValue());
@@ -218,7 +218,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_return_method_on_generic_class_with_non_generic_interface() {
             var swan = new GenericSwan<string>();
-            var duck = swan.As<IStringGetValue>();
+            var duck = swan.AsImplementationOf<IStringGetValue>();
             Assert.IsTrue(duck.Implements<IStringGetValue>());
             swan.Value = "baz";
             Assert.AreEqual("baz", duck.GetValue());
@@ -227,7 +227,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_setter_method_on_generic_class_with_generic_interface() {
             var swan = new GenericSwan<string>();
-            var duck = swan.As<IGenericSetValue<string>>();
+            var duck = swan.AsImplementationOf<IGenericSetValue<string>>();
             Assert.IsTrue(duck.Implements<IGenericSetValue<string>>());
             duck.SetValue("baz");
             Assert.AreEqual("baz", swan.Value);
@@ -236,7 +236,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_setter_method_on_generic_class_with_non_generic_interface_inheriting_generic_interface() {
             var swan = new GenericSwan<string>();
-            var duck = swan.As<IStringSetValueViaGenericInterface>();
+            var duck = swan.AsImplementationOf<IStringSetValueViaGenericInterface>();
             Assert.IsTrue(duck.Implements<IStringSetValueViaGenericInterface>());
             duck.SetValue("baz");
             Assert.AreEqual("baz", swan.Value);
@@ -245,7 +245,7 @@ namespace Droog.DuckPond.Test {
         [Test]
         public void Can_proxy_setter_method_on_generic_class_with_non_generic_interface() {
             var swan = new GenericSwan<string>();
-            var duck = swan.As<IStringSetValue>();
+            var duck = swan.AsImplementationOf<IStringSetValue>();
             Assert.IsTrue(duck.Implements<IStringSetValue>());
             duck.SetValue("baz");
             Assert.AreEqual("baz", swan.Value);
